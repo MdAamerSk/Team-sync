@@ -5,37 +5,47 @@ import Login from '../../features/auth/ui/pages/Login';
 import Register from '../../features/auth/ui/pages/Register';
 import DashboardLayout from '../layouts/DashboardLayout';
 import Home from '../../features/dashboard/ui/pages/Home';
-
+import { useDispatch } from "react-redux";
+import { currentLoggedEmployee } from "../../features/auth/state/auth/authAction";
 const AppRoutes = () => {
+
+    let dispatch = useDispatch();
+
+    useEffect(() => {
+        (() => {
+            dispatch(currentLoggedEmployee());
+        })();
+    }, []);
+
 
     let router = createBrowserRouter([
         {
-            path : "/",
-            element: <AuthLayout/>,
+            path: "/",
+            element: <AuthLayout />,
             children: [
                 {
                     path: "",
-                    element: <Login/>,
+                    element: <Login />,
                 },
                 {
                     path: "register",
-                    element: <Register/>
+                    element: <Register />
                 },
             ]
         },
         {
             path: "/home",
-            element:<DashboardLayout/>,
+            element: <DashboardLayout />,
             children: [
                 {
-                    path:"",
-                    element : <Home/>
+                    path: "",
+                    element: <Home />
                 }
             ]
         }
     ])
 
-  return  <RouterProvider router ={router}/>
+    return <RouterProvider router={router} />
 }
 
 export default AppRoutes
