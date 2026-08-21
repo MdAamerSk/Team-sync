@@ -7,6 +7,8 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import Home from '../../features/dashboard/ui/pages/Home';
 import { useDispatch } from "react-redux";
 import { currentLoggedEmployee } from "../../features/auth/state/auth/authAction";
+import PublicRoute from '../protectedRoutes.jsx/PublicRoute';
+import ProtectedRoute from '../protectedRoutes.jsx/ProtectedRoute';
 const AppRoutes = () => {
 
     let dispatch = useDispatch();
@@ -21,27 +23,41 @@ const AppRoutes = () => {
     let router = createBrowserRouter([
         {
             path: "/",
-            element: <AuthLayout />,
+            element: <PublicRoute />,
             children: [
                 {
                     path: "",
-                    element: <Login />,
+                    element: <AuthLayout />,
+                    children: [
+                        {
+                            path: "",
+                            element: <Login />,
+                        },
+                        {
+                            path: "/register",
+                            element: <Register />,
+                        },
+                    ]
                 },
-                {
-                    path: "register",
-                    element: <Register />
-                },
+
             ]
         },
         {
             path: "/home",
-            element: <DashboardLayout />,
+            element: <ProtectedRoute />,
             children: [
                 {
                     path: "",
-                    element: <Home />
+                    element: <DashboardLayout />,
+                    children: [
+                        {
+                            path: "",
+                            element: <Home />
+                        }
+                    ]
                 }
             ]
+
         }
     ])
 
